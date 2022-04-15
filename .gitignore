@@ -115,6 +115,7 @@ ENV/
 env.bak/
 venv.bak/
 
+./trydjango/.env
 # Spyder project settings
 .spyderproject
 .spyproject
