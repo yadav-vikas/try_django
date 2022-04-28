@@ -2,13 +2,13 @@
 
 {% block content %}
 
-<h1>{{title}} (id:{{id}})</h1>
-<p>{{content}} </p>
+<a href='{% url "article-create" %}'>Create Article</a>
+<a href="{% url 'article-detail' slug='Hello-world' %}">Hello world Article</a>
 
 <ul>
     {% for x in posts %}
         {%if x.title %}
-            <li><a href="/articles/{{ x.id }}/">{{ x.title }} - {{x.content }}</a></li>
+            <li><a href="{% url 'article-detail' slug=x.slug %}">{{ x.title }} - {{x.content }}</a></li>
         {% endif %}
     {% endfor %}
 </ul>
