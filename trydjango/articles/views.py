@@ -7,6 +7,7 @@ from django.contrib.auth.decorators import login_required
 from .forms import  ArticleFormold, ArticleForm
 from django.http import  Http404
 from django.db.models import Q
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 def article_detail_view(request, slug=None):
     article_obj = None
@@ -22,6 +23,7 @@ def article_detail_view(request, slug=None):
     context = {
         "object": article_obj,
     }
+    print("context: ",context)
     return render(request, "articles/detail.html", context=context)
 
 def article_view(request):
@@ -47,25 +49,42 @@ def article_search_view(request):
     }
     return render(request, "articles/search.html", context=context)
 
+# @login_required
+# def article_create_view(request):  
+#     login_url = '/login/'
+#     redirect_field_name = 'articles/new/create/'
+#     form = ArticleForm(request.POST or None)      
+#     context = {
+#         "form" : form
+#     }
+#     # if request.method == "POST":
+#     #     form = ArticleForm(request.POST)
+#     context['form'] = form
+#     if form.is_valid():
+#         article_object = form.save()
+#         context['form'] = ArticleForm()
+#         # return redirect("article-detail", slug=article_object.slug)
+#         return redirect(article_object.get_absolute_url())
+#         # title = form.cleaned_data.get("title")
+#         # content = form.cleaned_data.get("content")
+#         # # print(title, content)
+#         # article_object = Article.objects.create(title=title, content=content)
+#         # context['object'] = article_object
+#         # context['created'] = True
+    
+#     return render(request, "articles/create.html", context=context)
+
 @login_required
-def article_create_view(request):  
-    form = ArticleForm(request.POST or None)      
+def article_create_view(request):
+    form = ArticleForm(request.POST or None)
     context = {
-        "form" : form
+        "form": form
     }
-    # if request.method == "POST":
-    #     form = ArticleForm(request.POST)
-    context['form'] = form
     if form.is_valid():
         article_object = form.save()
         context['form'] = ArticleForm()
         # return redirect("article-detail", slug=article_object.slug)
         return redirect(article_object.get_absolute_url())
-        # title = form.cleaned_data.get("title")
-        # content = form.cleaned_data.get("content")
-        # # print(title, content)
-        # article_object = Article.objects.create(title=title, content=content)
         # context['object'] = article_object
         # context['created'] = True
-    
     return render(request, "articles/create.html", context=context)

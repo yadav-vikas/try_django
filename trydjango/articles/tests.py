@@ -9,7 +9,7 @@ class ArticleTestCase(TestCase):
     def  setUp(self):
         self.number_of_articles = 5
         for i in range(0,self.number_of_articles):
-            Article.objects.create(title="hellow world", content="hellow world content")
+            Article.objects.create(title="hello world", content="hello world content")
 
     def test_queryset_exists(self):
         qs = Article.objects.all()
@@ -27,7 +27,7 @@ class ArticleTestCase(TestCase):
         self.assertEqual(slug,slugified_title)
 
     def test_hellow_world_slug(self):
-        qs = Article.objects.exclude(slug__iexact = 'hellow-world')
+        qs = Article.objects.exclude(slug__iexact = 'hello-world')
         for obj in qs:
             title = obj.title
             slug = obj.slug
@@ -48,3 +48,7 @@ class ArticleTestCase(TestCase):
         self.assertEqual(qs.count(), self.number_of_articles)
         qs = Article.objects.search(query = 'something else')
         self.assertEqual(qs.count(), self.number_of_articles)
+
+    def test_article_search(self):
+        qs = Article.objects.search(query='hellow world')
+        self.assertEqual(qs.count(),self.number_of_articles)
